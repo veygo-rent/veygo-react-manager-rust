@@ -30,6 +30,19 @@ fn clone_or_pull_repo() {
             .arg(CLONE_DIR)
             .status();
     }
+
+    // Run `npm install`
+    let _ = Command::new("npm")
+        .arg("install")
+        .current_dir(CLONE_DIR)
+        .status();
+
+    // Run `npm run build`
+    let _ = Command::new("npm")
+        .arg("run")
+        .arg("build")
+        .current_dir(CLONE_DIR)
+        .status();
 }
 
 #[tokio::main]
@@ -45,19 +58,6 @@ async fn main() {
                     if new_commit != current_commit {
                         println!("New commit {} found. Rebuilding...", new_commit);
                         current_commit = new_commit;
-
-                        // Run `npm install`
-                        let _ = Command::new("npm")
-                            .arg("install")
-                            .current_dir(CLONE_DIR)
-                            .status();
-
-                        // Run `npm run build`
-                        let _ = Command::new("npm")
-                            .arg("run")
-                            .arg("build")
-                            .current_dir(CLONE_DIR)
-                            .status();
                     }
                 }
             }
